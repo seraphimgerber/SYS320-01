@@ -23,11 +23,11 @@ function Get-LoginLogoff {
 
     $eventRecords = @()
 
-    $events = Get-EventLog -LogName Security -InstanceID 4624, 4634 -After (Get-Date).AddDays(-$Days) 
+    $events = Get-EventLog -LogName System -InstanceID 7001, 7002 -After (Get-Date).AddDays(-$Days) 
 
     foreach ($event in $events) {
-        $eventType = if ($event.InstanceId -eq 4624) { "Logon" } else { "Logoff" }
-        $sid = $event.ReplacementStrings[4]
+        $eventType = if ($event.InstanceId -eq 7001) { "Logon" } else { "Logoff" }
+        $sid = $event.ReplacementStrings[1]
         $username = Convert-Sid -Sid $sid
 
         $eventObject = [PSCustomObject]@{

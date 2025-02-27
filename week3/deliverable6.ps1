@@ -1,4 +1,4 @@
-﻿. C:\Users\champuser\deliverable5.ps1 
+﻿. C:\Users\champuser\SYS320-01\week3\deliverable5.ps1 
 
 $days = 14
 
