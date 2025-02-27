@@ -31,7 +31,7 @@ while($operation){
 
     elseif($choice -eq 2){
         Write-Host "Fetching last 10 failed logins..."
-        getFailedLogins | Select-Object -First 10 | Format-Table
+        getFailedLogins 1 | Select-Object -First 10 | Format-Table
     }
 
     elseif($choice -eq 3){
