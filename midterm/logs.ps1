@@ -1,8 +1,8 @@
 ﻿function Get-IOCLogs {
 
     $logFilePath = "C:\Users\champuser\Downloads\access.log"
-    $notfounds = Get-Content -Path $logFilePath | Select-String -Pattern 'et\cpasswd|cmd=\/bin/bash|/bin/sh|1=1#|1=1--'
-    $logRegex = [regex] '^(?<IP>\d+\.\d+\.\d+\.\d+) - - \[(?<Time>[^\]]+)\] "(?<Method>[A-Z]+) (?<Page>.*?) (?<Protocol>HTTP/{\d\.]+)" (?<ResponseCode>\d+) \d+ "(?<Referrer>. *?)"'
+    $notfounds = Get-Content -Path $logFilePath | Select-String -Pattern 'etc/passwd|cmd=/bin/bash|/bin/sh|1=1#|1=1--'
+    $logRegex = [regex] '^(?<IP>\d+\.\d+\.\d+\.\d+) - - \[(?<Time>[^\]]+)\] "(?<Method>[A-Z]+) (?<Page>.*?) (?<Protocol>HTTP/[\d\.]+)" (?<ResponseCode>\d+) \d+ "(?<Referrer>. *?)"'
 
     $logData = @()
 
@@ -26,4 +26,4 @@
     $logData | Format-Table
 }
 
-Get-IOCLogs
+Get-IOCLogs | Format-Table
