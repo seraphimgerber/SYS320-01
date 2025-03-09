@@ -4,7 +4,7 @@
     )
 
     $webContent = Invoke-WebRequest -Uri $url -UseBasicParsing
-    $html = $webontent.content -join "`n"
+    $html = $webcontent.content -join "`n"
 
     $xml = [xml]("<root>" + $html + "</root>")
 
