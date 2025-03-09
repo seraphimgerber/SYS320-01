@@ -1,32 +1,31 @@
 ﻿function Get-IOC {
     param (
-        [string]$url = http://10.0.17.6/IOC.html"
+        [string]$url = "http://10.0.17.6/IOC.html"
     )
 
     $webContent = Invoke-WebRequest -Uri $url -UseBasicParsing
+    $html = $webontent.content -join "`n"
 
-    $html = New-Object -ComObject "HTMLFile"
-    $html.IHTMLDocument2_write($webContent.Content)
+    $xml = [xml]("<root>" + $html + "</root>")
 
-    $rows = $html.getElementsByTagName("tr")
+    $rows = $xml.SelectNodes("//tr")
 
     $IOC_List = @()
-
-    for ($i = 1; $i -lt $rows.length; $i++) {
-        $cols = $rows[$i].getElementsByTagName("td")
-        if ($cols.length -eq 2) {
-            $pattern = $cols[0].innerText.trim()
-            $description = $cols[1].innerText.trim()
+    
+    foreach ($row in $rows) {
+        $cols = $row.SelectNodes("td")
+        if ($cols.Count -eq 2) {
+            $pattern = $cols[0].InnerText.Trim()
+            $description = $cols[1].InnerText.Trim()
 
             $IOC_List += [PSCustomObject]@{
                 Pattern = $pattern
                 Explanation = $description
             }
         }
+
     }
-
     return $IOC_List
-
 }
 
-Get-IOC
+Get-IOC | Format-Table -AutoSize
