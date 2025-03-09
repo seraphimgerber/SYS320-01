@@ -7,6 +7,11 @@ $config = readConfig
 
 $Failed = listAtRiskUsers $config.Days
 
-SendAlertEmail ($Failed | Format-Table | Out-String)
+$FailedFormatted = $Failed | Format-Table -Autosize | Out-String
+
+SendAlertEmail $FailedFormatted
 
 ChooseTimeToRun($config.ExecutionTime)
+
+
+

@@ -64,5 +64,3 @@ while($operation){
     }
 
 }
-
-configurationMenu

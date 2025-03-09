@@ -74,9 +74,8 @@ function listAtRiskUsers() {
     $groupedUsers = $failedLogins | Group-Object -Property User | Where-Object { $_.Count -gt 10 }
 
     if ($groupedUsers) {
-        Write-Host "Users with more than 10 failed logins in the last $days days:"
-        $groupedUsers | ForEach-Object { Write-Host "$($_.Name) - Failled attempts: $($_.Count)" }
+        return $groupedUsers | Select-Object @{Name="Name"; Expression={$_.Name}}, @{Name="Count"; Expression={$_.Count}}
     } else {
-        Write-Host "No at-risk users found."
+        return @()
     }
 }
