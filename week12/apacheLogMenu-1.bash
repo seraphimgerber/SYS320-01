@@ -35,6 +35,7 @@ function histogram(){
 }
 
 function frequentVisitors(){
+	declare -A count
 	
 	while read -r line;
 	do
@@ -62,25 +63,14 @@ function suspiciousVisitors(){
 
 	while read -r ioc; do
 		while read -r line; do
-			if [[ "$line" == *"$ioc"* ]]; then
+			if grep -q "$ioc" <<< "$line"; then
 				ip=$(echo "$line" | awk '{print $1}')
-
-				found=false
-				for existing_ip in "${ips[@]}"; do
-					if [[ "$existing_ip" == "$ip" ]]; then
-						found=true
-						break
-					fi
-				done
-
-				if ! $found; then
-					ips+=("$ip")
-				fi
+				ips["$ip']=1
 			fi
 		done < "$logFile"
 	done < "ioc.txt"
 
-	echo "Unique suspicious IP count: ${ips[@]}"
+	echo "Unique suspicious IP count: ${#ips[@]}"
 }
 # function: suspiciousVisitors
 # Manually make a list of indicators of attack (ioc.txt)
