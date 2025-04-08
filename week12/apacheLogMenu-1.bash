@@ -36,18 +36,17 @@ function histogram(){
 }
 
 function frequentVisitors(){
-	declare -A count
 	
-	while read -r line;
-	do
-		ip=$(echo "$line" | awk '{print $1}')
+	:> freqtemp.txt
+	
+	cat "$logFile" | cut -d " " -f 1,4 | tr -d "[" | while read -r ip datetime; do
+		dateOnly=$(echo "$datetime" | cut -d ":" -f1)
+		echo "$ip $dateOnly" >> freqtemp.txt
+	done
 
-		count[$ip]=$((count[$ip] + 1))
-	done < "$logFile"
-
-	for ip in "${!count[@]}"; do
-		if (( count[$ip] > 10 )); then
-			echo "$ip"
+	sort freqtemp.txt | uniq -c | while read -r count ip date ; do
+		if (( count > 10 )); then
+			echo "$count $ip $date"
 		fi
 	done
 }
@@ -63,15 +62,15 @@ function suspiciousVisitors(){
 	declare -A ips
 
 	while read -r ioc; do
-		while read -r line; do
-			if grep -q "$ioc" <<< "$line"; then
-				ip=$(echo "$line" | awk '{print $1}')
-				ips["$ip"]=1
-			fi
-		done < "$logFile"
+		grep "$ioc" "$logFile" | while read -r line; do
+			ip=$(echo "$line" | awk '{print $1}')
+			((ips["$ip"]++))
+		done
 	done < "ioc.txt"
 
-	echo "Unique suspicious IP count: ${#ips[@]}"
+	for ip in "${!ips[@]}"; do
+		echo "${ips[$ip]} $ip"
+	done
 }
 # function: suspiciousVisitors
 # Manually make a list of indicators of attack (ioc.txt)
