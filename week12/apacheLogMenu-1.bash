@@ -1,6 +1,7 @@
+
 #! /bin/bash
 
-logFile="/var/log/apache2/access.log"
+logFile="/var/log/apache2/access.log.1" # change to your access log
 
 function displayAllLogs(){
 	cat "$logFile"
@@ -11,7 +12,7 @@ function displayOnlyIPs(){
 }
 
 function displayOnlyPages(){
-	cat "$logFile" | cut -d ' ' -f 7 | tr -d '/' | sort -n | uniq -c
+	cat "$logFile" | cut -d ' ' -f 7 | sort -n | uniq -c
 }
 
 function histogram(){
@@ -59,13 +60,13 @@ function frequentVisitors(){
 # only with daily number of visits that are greater than 10 
 
 function suspiciousVisitors(){
-	ips=()
+	declare -A ips
 
 	while read -r ioc; do
 		while read -r line; do
 			if grep -q "$ioc" <<< "$line"; then
 				ip=$(echo "$line" | awk '{print $1}')
-				ips["$ip']=1
+				ips["$ip"]=1
 			fi
 		done < "$logFile"
 	done < "ioc.txt"
@@ -121,7 +122,7 @@ do
 		frequentVisitors
 
 	elif [[ "$userInput" == "6" ]]; then
-		echo "Suspicious visitors:"
+		echo "Suspicious visitors count:"
 		suspiciousVisitors
 
 	else 
