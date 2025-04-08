@@ -62,10 +62,12 @@ function suspiciousVisitors(){
 	declare -A ips
 
 	while read -r ioc; do
-		grep "$ioc" "$logFile" | while read -r line; do
+		matches=$(grep "$ioc" "$logFile")
+
+		while read -r line; do
 			ip=$(echo "$line" | awk '{print $1}')
 			((ips["$ip"]++))
-		done
+		done <<< "$matches"
 	done < "ioc.txt"
 
 	for ip in "${!ips[@]}"; do
