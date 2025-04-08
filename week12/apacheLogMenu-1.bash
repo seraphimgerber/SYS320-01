@@ -66,7 +66,9 @@ function suspiciousVisitors(){
 
 		while read -r line; do
 			ip=$(echo "$line" | awk '{print $1}')
-			((ips["$ip"]++))
+			if [[ -n "$ip" ]]; then
+				((ips["$ip"]++))
+			fi
 		done <<< "$matches"
 	done < "ioc.txt"
 
