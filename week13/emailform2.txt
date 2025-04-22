@@ -1,0 +1,7 @@
+To: seraphim.gerber@mymail.champlain.edu
+Subject: Failed Logins
+Apr  8 user=champuser
+Apr  8 user=champuser
+Apr  9 user=champuser
+Apr  9 user=champuser
+Apr  9 user=champuser
