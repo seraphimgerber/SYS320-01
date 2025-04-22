@@ -49,22 +49,14 @@ read courseSub
 
 echo ""
 echo "Available courses in $courseSub :"
-while read -r line; do 
-	seats=$(echo "$line" | cut -d ';' -f4)
-		if [ "$seats" -gt 0 ]; then
-			echo "$line"
-		fi
-	done < <(grep "$courseSub" "$courseFile" | sed 's/;/ | /g')
+grep "^$courseSub" "$courseFile" | while IFS=";" read -r f1 f2 f3 f4 f5 f6 f7 f8 f9 f10; do
+	if [ "$f4" -gt 0 ]; then
+		echo "$f1 | $f2 | $f3 | $f4 | $f5 | $f6 | $f7 | $f8 | $f9 | $f10"
+	fi
+done
 echo ""
 
 }
-# TODO - 2
-# Make a function that displays all the courses that has availability
-# (seat number will be more than 0) for the given course code
-# Add function to the menu
-# Example input: SEC
-# Example output: See the screenshots in canvas
-
 while :
 do
 	echo ""
