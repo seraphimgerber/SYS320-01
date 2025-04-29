@@ -4,7 +4,17 @@ myIP=$(bash myIP.bash)
 
 
 # Todo-1: Create a helpmenu function that prints help for the script
-
+clear
+echo "HELP MENU"
+echo "-------------"
+echo "-n: Add -n as an argument for this script to use nmap"
+echo " -n external: External NMAP scan"
+echo " -n internal: Internal NMAP scan"
+echo "-s: Add -s as an argument for this script to use ss"
+echo " -s external: External ss(Netstat) scan"
+echo " -s internal: Internal ss(Netstat) scan"
+echo "Usage: bash networkchecker.bash -n/-s external/internal"
+echo "-------------"
 
 # Return ports that are serving to the network
 function ExternalNmap(){
@@ -16,9 +26,9 @@ function InternalNmap(){
   rin=$(nmap localhost | awk -F"[/[:space:]]+" '/open/ {print $1,$4}' )
 }
 
-
 # Only IPv4 ports listening from network
 function ExternalListeningPorts(){
+  expo=$(ss -ltpn | awk -F"[[:space:]:(),]+" '/0.0.0.0/ {print $5, $9}' | tr -d "\"" )
 
 # Todo-2: Complete the ExternalListeningPorts that will print the port and application
 # that is listening on that port from network (using ss utility)
