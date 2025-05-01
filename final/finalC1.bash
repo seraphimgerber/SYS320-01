@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 link="http://10.0.17.6/IOC.html"
 fullPage=$(curl -sL "$link")
 

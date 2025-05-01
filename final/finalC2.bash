@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 if [ "$#" -ne 2 ]; then
 	echo "Needs access_log and ioc_file input"
 	exit

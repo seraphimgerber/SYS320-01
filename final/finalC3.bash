@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 input="report.txt"
 output="report.html"
 dest="/var/www/html/$output"
